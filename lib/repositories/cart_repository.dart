@@ -15,18 +15,10 @@ class CartRepository{
   Future<List<CartResponse>> getCartResponseList(
       @required int user_id, ) async {
 
-    final response = await http.post("${AppConfig.BASE_URL}/carts/${user_id}",
-        headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"}, );
-    print("This is response.body "+response.body);
-    print("--------------------------");
-    // cartResponseFromJson(response.body);
-    List<dynamic>  json_decoded = json.decode(response.body);
-    CartResponse data = new CartResponse.fromJson(json_decoded[0]);
+    final response = await http.post("${AppConfig.BASE_URL}/carts/$user_id",
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"}, );
 
-    print(CartResponse(data.name, data.owner_id, data.cart_items).toJson());
-    print("--------------------------");
-    print("This is last line " + data.toJson().toString());
-
+    return cartResponseFromJson(response.body);
   }
 
   Future<CartDeleteResponse> getCartDeleteResponse(
@@ -43,7 +35,7 @@ class CartRepository{
 
     var post_body = jsonEncode({"cart_ids": "${cart_ids}", "cart_quantities": "$cart_quantities"});
     final response = await http.post("${AppConfig.BASE_URL}/carts/process",
-      headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"},body: post_body );
+        headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"},body: post_body );
 
     return cartProcessResponseFromJson(response.body);
   }
@@ -56,13 +48,13 @@ class CartRepository{
     final response = await http.post("${AppConfig.BASE_URL}/carts/add",
         headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"},body: post_body );
 
-  print(response.body.toString());
+    print(response.body.toString());
     return cartAddResponseFromJson(response.body);
   }
 
   Future<CartSummaryResponse> getCartSummaryResponse(@required owner_id) async {
     final response = await http.get("${AppConfig.BASE_URL}/cart-summary/${user_id.value}/${owner_id}",
-        headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"}, );
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer ${access_token.value}"}, );
 
     return cartSummaryResponseFromJson(response.body);
   }

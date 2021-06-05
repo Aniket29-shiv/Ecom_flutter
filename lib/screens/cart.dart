@@ -1,7 +1,8 @@
 import 'package:active_ecommerce_flutter/screens/shipping_info.dart';
+import 'package:active_ecommerce_flutter/ui_sections/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_sections/main_drawer.dart';
+// import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
 import 'package:flutter/widgets.dart';
 import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
@@ -32,15 +33,11 @@ class _CartState extends State<Cart> {
     // TODO: implement initState
     super.initState();
 
-    print("user data");
+    /*print("user data");
     print(is_logged_in.value);
     print(access_token.value);
     print(user_id.value);
-    print(user_name.value);
-
-    // print("Cart data");
-    // print(.value);
-
+    print(user_name.value);*/
 
     if (is_logged_in.value == true) {
       fetchData();
@@ -55,13 +52,12 @@ class _CartState extends State<Cart> {
 
   fetchData() async {
 
-  var cartResponseList =
-        await CartRepository().getCartResponseList(user_id.value);
-  print("In cart.dat filed "+cartResponseList.toString());
+    var cartResponseList =
+    await CartRepository().getCartResponseList(user_id.value);
 
     if (cartResponseList != null && cartResponseList.length > 0) {
       _shopList = cartResponseList;
-      _chosenOwnerId = int.parse(cartResponseList[0].owner_id);
+      _chosenOwnerId = cartResponseList[0].owner_id;
     }
     _isInitial = false;
     getSetCartTotal();
@@ -132,45 +128,45 @@ class _CartState extends State<Cart> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              contentPadding: EdgeInsets.only(
-                  top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
-              content: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Text(
-                  "Are you sure to remove this item",
-                  maxLines: 3,
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
-                ),
+          contentPadding: EdgeInsets.only(
+              top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+          content: Padding(
+            padding:
+            const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Text(
+              "Are you sure to remove this item",
+              maxLines: 3,
+              style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: MyTheme.medium_grey),
               ),
-              actions: [
-                FlatButton(
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(color: MyTheme.medium_grey),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                FlatButton(
-                  color: MyTheme.soft_accent_color,
-                  child: Text(
-                    "Confirm",
-                    style: TextStyle(color: MyTheme.dark_grey),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    confirmDelete(cart_id);
-                  },
-                ),
-              ],
-            ));
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              color: MyTheme.soft_accent_color,
+              child: Text(
+                "Confirm",
+                style: TextStyle(color: MyTheme.dark_grey),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                confirmDelete(cart_id);
+              },
+            ),
+          ],
+        ));
   }
 
   confirmDelete(cart_id) async {
     var cartDeleteResponse =
-        await CartRepository().getCartDeleteResponse(cart_id);
+    await CartRepository().getCartDeleteResponse(cart_id);
 
     if (cartDeleteResponse.result == true) {
       ToastComponent.showDialog(cartDeleteResponse.message, context,
@@ -201,7 +197,6 @@ class _CartState extends State<Cart> {
           shop.cart_items.forEach((cart_item) {
             cart_ids.add(cart_item.id);
             cart_quantities.add(cart_item.quantity);
-            print("This is cart_item in cart.dart(203) "+cart_item);
           });
         }
       });
@@ -336,7 +331,7 @@ class _CartState extends State<Cart> {
                       child: Text(
                         "Total Amount",
                         style:
-                            TextStyle(color: MyTheme.font_grey, fontSize: 14),
+                        TextStyle(color: MyTheme.font_grey, fontSize: 14),
                       ),
                     ),
                     Spacer(),
@@ -362,7 +357,7 @@ class _CartState extends State<Cart> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border:
-                            Border.all(color: MyTheme.textfield_grey, width: 1),
+                        Border.all(color: MyTheme.textfield_grey, width: 1),
                         borderRadius: const BorderRadius.only(
                           topLeft: const Radius.circular(8.0),
                           bottomLeft: const Radius.circular(8.0),
@@ -375,11 +370,11 @@ class _CartState extends State<Cart> {
                       color: MyTheme.light_grey,
                       shape: RoundedRectangleBorder(
                           borderRadius: const BorderRadius.only(
-                        topLeft: const Radius.circular(8.0),
-                        bottomLeft: const Radius.circular(8.0),
-                        topRight: const Radius.circular(0.0),
-                        bottomRight: const Radius.circular(0.0),
-                      )),
+                            topLeft: const Radius.circular(8.0),
+                            bottomLeft: const Radius.circular(8.0),
+                            topRight: const Radius.circular(0.0),
+                            bottomRight: const Radius.circular(0.0),
+                          )),
                       child: Text(
                         "UPDATE CART",
                         style: TextStyle(
@@ -401,7 +396,7 @@ class _CartState extends State<Cart> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border:
-                            Border.all(color: MyTheme.textfield_grey, width: 1),
+                        Border.all(color: MyTheme.textfield_grey, width: 1),
                         borderRadius: const BorderRadius.only(
                           topLeft: const Radius.circular(0.0),
                           bottomLeft: const Radius.circular(0.0),
@@ -414,11 +409,11 @@ class _CartState extends State<Cart> {
                       color: MyTheme.accent_color,
                       shape: RoundedRectangleBorder(
                           borderRadius: const BorderRadius.only(
-                        topLeft: const Radius.circular(0.0),
-                        bottomLeft: const Radius.circular(0.0),
-                        topRight: const Radius.circular(8.0),
-                        bottomRight: const Radius.circular(8.0),
-                      )),
+                            topLeft: const Radius.circular(0.0),
+                            bottomLeft: const Radius.circular(0.0),
+                            topRight: const Radius.circular(8.0),
+                            bottomRight: const Radius.circular(8.0),
+                          )),
                       child: Text(
                         "PROCEED TO SHIPPING",
                         style: TextStyle(
@@ -450,7 +445,7 @@ class _CartState extends State<Cart> {
         child: Builder(
           builder: (context) => Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 18.0, horizontal: 0.0),
+            const EdgeInsets.symmetric(vertical: 18.0, horizontal: 0.0),
             child: Container(
               child: Image.asset(
                 'assets/hamburger.png',
@@ -482,9 +477,9 @@ class _CartState extends State<Cart> {
           height: 100,
           child: Center(
               child: Text(
-            "Please log in to see the cart items",
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                "Please log in to see the cart items",
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else if (_isInitial && _shopList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper()
@@ -550,9 +545,9 @@ class _CartState extends State<Cart> {
           height: 100,
           child: Center(
               child: Text(
-            "Cart is empty",
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                "Cart is empty",
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     }
   }
 
@@ -623,14 +618,14 @@ class _CartState extends State<Cart> {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             _shopList[seller_index]
-                                    .cart_items[item_index]
-                                    .currency_symbol +
+                                .cart_items[item_index]
+                                .currency_symbol +
                                 (_shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .price *
-                                        _shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .quantity)
+                                    .cart_items[item_index]
+                                    .price *
+                                    _shopList[seller_index]
+                                        .cart_items[item_index]
+                                        .quantity)
                                     .toString(),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
